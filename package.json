@@ -1,0 +1,22 @@
+{
+    "source": "index.html",
+    "browserslist": [
+        "> 1% in RO",
+        "> 0.1%"
+    ],
+    "scripts": {
+        "start": "parcel",
+        "build": "parcel build --no-optimize"
+    },
+    "devDependencies": {
+        "@parcel/transformer-sass": "^2.7.0",
+        "parcel": "latest",
+        "process": "^0.11.10"
+    },
+    "dependencies": {
+        "bootstrap": "^5.2.0",
+        "react": "^18.2.0",
+        "react-bootstrap": "^2.5.0",
+        "react-dom": "^18.2.0"
+    }
+}
