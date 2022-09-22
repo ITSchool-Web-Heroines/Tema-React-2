@@ -9,6 +9,7 @@
     WARNING: You need to transform the facts variable into a state.
 */
 
+import { useEffect, useState } from "react";
 import { Container, ListGroup, ListGroupItem, Navbar } from "react-bootstrap";
 
 async function getNewFact() {
@@ -22,12 +23,34 @@ export default function App() {
     // Use state here
     // Hint: https://reactjs.org/docs/hooks-state.html
     // Hint: https://reactjs.org/docs/state-and-lifecycle.html#using-state-correctly
-    const facts = [
-        "Cats are weird",
-    ];
+    const [
+        facts,      // The current value of this state 
+        setFacts    // A function to update the state
+    ] = useState([]);
 
     // Using the getNewFact function, load a new fact when this component is first loaded
     // Hint: https://reactjs.org/docs/hooks-effect.html
+
+    /**
+     * Function to load the fact and add it to the list
+     */
+    const loadFact = async () => {
+        const fact = await getNewFact();
+
+        // When updating the array, we should always use the set function of the state.
+        setFacts([...facts, fact]);
+    }
+
+    useEffect(
+        () => {
+            // Even if loadFact is async, we can still call it, and ignore the fact it returns a promise.
+            loadFact();
+
+            // We do not want to return anything here. That's why we use curly braces
+        }, 
+
+        [], // With an empty array, this effect runs only once, when the component is loaded
+    );
 
     return (
         <Container>
@@ -42,13 +65,11 @@ export default function App() {
                     <ListGroup.Item className="fw-bold">Cat facts</ListGroup.Item>
                     {facts.map((fact) => <ListGroupItem key={fact}>{ fact }</ListGroupItem>)}
                     
-                    <ListGroup.Item action={true} variant="primary">
-                        {/* 
-                            On click, add a new fact to the list.
-
-                            Docs for List Group Item component: 
-                            https://react-bootstrap.netlify.app/components/list-group/#list-group-item-props
-                        */}
+                    <ListGroup.Item 
+                        action={true} 
+                        variant="primary" 
+                        onClick={loadFact /* <-- New stuff */}
+                    >
                         Get new fact
                     </ListGroup.Item>
                 </ListGroup>
