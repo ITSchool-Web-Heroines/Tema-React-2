@@ -57,13 +57,14 @@ export default function App() {
                     
                     {facts.map((fact) => <ListGroupItem key={fact}>{ fact }</ListGroupItem>)}
                     
-                    <ListGroup.Item action={true} variant="primary">        
-                       {/* // {!fact && <setfact onClick={() => getNewFact(true)} 
+                    <ListGroup.Item action={true} variant="primary" onClick={newFact}>      
+                 
+                      { /* 
 
                             On click, add a new fact to the list.
                             Docs for List Group Item component: 
                             https://react-bootstrap.netlify.app/components/list-group/#list-group-item-props 
-                        */}
+    */}
                         Get new fact
         
                     </ListGroup.Item>
