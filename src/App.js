@@ -12,28 +12,18 @@
 import { useEffect, useState } from "react";
 import { Container, ListGroup, ListGroupItem, Navbar } from "react-bootstrap";
 
-async function getNewFact() {
-  const response = await fetch("https://catfact.ninja/fact");
-  const obj = await response.json();
-
-  return obj.fact;
-}
-
 export default function App() {
-  // Use state here
-  // Hint: https://reactjs.org/docs/hooks-state.html
-  // Hint: https://reactjs.org/docs/state-and-lifecycle.html#using-state-correctly
-  const [fact, setFact] = useState("");
+  const [facts, setFact] = useState(["Cats are weird."]);
+
+  const getNewFact = async function getNewFact() {
+    const response = await fetch("https://catfact.ninja/fact");
+    const obj = await response.json();
+    setFact([...facts, obj.fact]);
+  };
+
   useEffect(() => {
-    (async () => {
-      const response = await fetch("https://catfact.ninja/fact");
-      const obj = await response.json();
-      setFact(obj.fact);
-      return obj.fact;
-    })();
+    getNewFact();
   }, []);
-  // Using the getNewFact function, load a new fact when this component is first loaded
-  // Hint: https://reactjs.org/docs/hooks-effect.html
 
   return (
     <Container>
@@ -46,19 +36,17 @@ export default function App() {
       <Container as="main" className="my-5 flex-grow-1">
         <ListGroup>
           <ListGroup.Item className="fw-bold">Cat facts</ListGroup.Item>
-          <ListGroup.Item>{fact}</ListGroup.Item>
-
-          {/* {facts.map(fact => (
+          {facts.map(fact => (
             <ListGroupItem key={fact}>{fact}</ListGroupItem>
-          ))} */}
-
-          <ListGroup.Item action={true} variant="primary">
-            {/* 
-                            On click, add a new fact to the list.
-
-                            Docs for List Group Item component: 
-                            https://react-bootstrap.netlify.app/components/list-group/#list-group-item-props
-                        */}
+          ))}
+          <ListGroup.Item
+            className="fw-bold"
+            action={true}
+            variant="primary"
+            onClick={() => {
+              getNewFact();
+            }}
+          >
             Get new fact
           </ListGroup.Item>
         </ListGroup>
