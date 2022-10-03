@@ -10,49 +10,47 @@
 */
 
 import { Container, ListGroup, ListGroupItem, Navbar } from "react-bootstrap";
-
-async function getNewFact() {
-    const response = await fetch("https://catfact.ninja/fact");
-    const obj = await response.json();
-
-    return obj.fact;
-}
+import { useState, useEffect } from "react";
 
 export default function App() {
-    // Use state here
-    // Hint: https://reactjs.org/docs/hooks-state.html
-    // Hint: https://reactjs.org/docs/state-and-lifecycle.html#using-state-correctly
-    const facts = [
-        "Cats are weird",
-    ];
+  const [facts, setFact] = useState([]);
 
-    // Using the getNewFact function, load a new fact when this component is first loaded
-    // Hint: https://reactjs.org/docs/hooks-effect.html
+  async function getNewFact() {
+    const response = await fetch("https://catfact.ninja/fact");
+    const obj = await response.json();
+    setFact([obj.fact]);
+  }
 
-    return (
-        <Container>
-            <Navbar as="header" bg="primary" className="bg-gradient">
-                <Container fluid>
-                    <Navbar.Brand className="text-white">Tema React 2</Navbar.Brand>
-                </Container>
-            </Navbar>
+  useEffect(() => {
+    getNewFact();
+  }, []);
 
-            <Container as="main" className="my-5 flex-grow-1">
-                <ListGroup>
-                    <ListGroup.Item className="fw-bold">Cat facts</ListGroup.Item>
-                    {facts.map((fact) => <ListGroupItem key={fact}>{ fact }</ListGroupItem>)}
-                    
-                    <ListGroup.Item action={true} variant="primary">
-                        {/* 
-                            On click, add a new fact to the list.
-
-                            Docs for List Group Item component: 
-                            https://react-bootstrap.netlify.app/components/list-group/#list-group-item-props
-                        */}
-                        Get new fact
-                    </ListGroup.Item>
-                </ListGroup>
-            </Container>
+  return (
+    <Container>
+      <Navbar as="header" bg="primary" className="bg-gradient">
+        <Container fluid>
+          <Navbar.Brand className="text-white">Tema React 2</Navbar.Brand>
         </Container>
-    )
+      </Navbar>
+
+      <Container as="main" className="my-5 flex-grow-1">
+        <ListGroup>
+          <ListGroup.Item className="fw-bold">Cat facts</ListGroup.Item>
+          {facts.map((fact) => (
+            <ListGroupItem key={fact}>{fact}</ListGroupItem>
+          ))}
+
+          <ListGroup.Item
+            action={true}
+            variant="primary"
+            onClick={() => {
+              getNewFact();
+            }}
+          >
+            Get new fact
+          </ListGroup.Item>
+        </ListGroup>
+      </Container>
+    </Container>
+  );
 }
